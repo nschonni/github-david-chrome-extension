@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "version": "1",
+  "name": "github+david-dm",
+  "description": "Display NPM depenency status next to the project name on github.",
+
+  "icons": {
+    "16":  "icon-16.png",
+    "48":  "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "permissions": [ "https://github.com/*" ],
+  "content_scripts": [ {
+    "js":      [ "script.js" ],
+    "matches": [ "https://github.com/*" ],
+    "run_at":  "document_idle"
+  }]
+}
