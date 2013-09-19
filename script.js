@@ -25,29 +25,37 @@ function insertStatusIcon(el) {
      * fired if the image was loaded successfully, it will not fire if the
      * image does not exist. */
     img.onload = function() {
-        /* Add relevant rules to the stylesheet. */
-        document.styleSheets[0].insertRule('#david-dm, #david-dm-dev{border-radius:1px;display:inline-block;margin-left:8px;margin-bottom:-1px;opacity:0.9;-webkit-transition: all .2s;}', 1)
-        document.styleSheets[0].insertRule('#david-dm:hover, #david-dm-dev:hover{background:rgba(0,0,0,0.5);box-shadow: 0 0 3px rgba(0,0,0,1);opacity:1;cursor:pointer;}', 1)
-        document.styleSheets[0].insertRule('#david-dm img, #david-dm-dev img{display:block;}', 1)
 
         var devImg = window.document.createElement('img');
         devImg.src = 'https://david-dm.org' + project + '/dev-status.png';
         devImg.alt = 'NPM develpment dependency status'
 
-        /* Create the link element. */
-        var link = window.document.createElement('a');
-        link.href = 'http://david-dm.org' + project;
-        link.id = 'david-dm';
+        devImg.onload = function() {
+            /* If the images match, then they've both loaded the Unknown image so don't bother displaying */
+            if (getBase64Image(img) !== getBase64Image(devImg)) {
+                return;
+            }
+            /* Add relevant rules to the stylesheet. */
+            document.styleSheets[0].insertRule('#david-dm, #david-dm-dev{border-radius:1px;display:inline-block;margin-left:8px;margin-bottom:-1px;opacity:0.9;-webkit-transition: all .2s;}', 1)
+            document.styleSheets[0].insertRule('#david-dm:hover, #david-dm-dev:hover{background:rgba(0,0,0,0.5);box-shadow: 0 0 3px rgba(0,0,0,1);opacity:1;cursor:pointer;}', 1)
+            document.styleSheets[0].insertRule('#david-dm img, #david-dm-dev img{display:block;}', 1)
 
-        /* Create the link element. */
-        var devLink = window.document.createElement('a');
-        devLink.href = 'http://david-dm.org' + project + '#info=devDependencies';
-        devLink.id = 'david-dm-dev';
+            /* Create the link element. */
+            var link = window.document.createElement('a');
+            link.href = 'http://david-dm.org' + project;
+            link.id = 'david-dm';
 
-        /* And finally insert the elements into the DOM. */
-        link.appendChild(img);
-        devLink.appendChild(devImg);
-        el.parentNode.insertBefore(devLink, el.nextSibling);
-        el.parentNode.insertBefore(link, el.nextSibling);
+            /* Create the link element. */
+            var devLink = window.document.createElement('a');
+            devLink.href = 'http://david-dm.org' + project + '#info=devDependencies';
+            devLink.id = 'david-dm-dev';
+
+            /* And finally insert the elements into the DOM. */
+            
+            link.appendChild(img);
+            devLink.appendChild(devImg);
+            el.parentNode.insertBefore(devLink, el.nextSibling);
+            el.parentNode.insertBefore(link, el.nextSibling);
+        }
     }
 }
